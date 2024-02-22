@@ -1,5 +1,21 @@
+export function getBeijingtime() {
+  //获得当前运行环境时间
+  let d = new Date();
+  let currentDate = new Date();
+  let tmpHours = currentDate.getHours();
+  //算得时区
+  var time_zone = -d.getTimezoneOffset() / 60;
+  if (time_zone < 0) {
+      time_zone = Math.abs(time_zone) + 8; currentDate.setHours(tmpHours + time_zone);
+  } else {
+      time_zone -= 8; currentDate.setHours(tmpHours - time_zone);
+  }
+  return currentDate;
+}
+
+
 export const getCurrentYearAndMonth = () => {
-    const today = new Date();
+    const today = getBeijingtime();
     const monthArrs =  ['null', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1;
@@ -60,7 +76,8 @@ function replaceDate(match: unknown, day: string, monthAbbr: MonthMatchType, yea
       "DEC": "12月"
     }
     const monthIndex = months.indexOf(monthAbbr); // 获取月份在数组中的索引
-    const fullYear = new Date().getFullYear(); // 获取当前年份的前两位，比如 20
+    const date = getBeijingtime();
+    const fullYear = date.getFullYear(); // 获取当前年份的前两位，比如 20
     const getMatchMonth = months[monthIndex] as MonthMatchType;
     const century = Math.floor(fullYear / 100) * 100; // 获取当前世纪，比如 2000
     const shortYear = parseInt(year, 10); // 将两位数年份转换为数字
