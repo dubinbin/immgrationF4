@@ -1,0 +1,43 @@
+<table border="1" cellspacing="0" cellpadding="3" width="100%">
+<tbody><tr><td><b>Family-<br>
+ Sponsored&nbsp;</b></td>
+<td><b>All Chargeability&nbsp;<br>
+ Areas Except<br>
+ Those Listed</b></td>
+<td><b>CHINA-mainland&nbsp;<br>
+ born</b></td>
+<td><b>INDIA</b></td>
+<td><b>MEXICO</b></td>
+<td><b>PHILIPPINES&nbsp;</b></td>
+</tr><tr><td>F1</td>
+<td>08FEB15<br>
+</td>
+<td>08FEB15</td>
+<td>08FEB15</td>
+<td>01MAY01</td>
+<td>01MAR12</td>
+</tr><tr><td>F2A</td>
+<td>22JUN20</td>
+<td>22JUN20</td>
+<td>22JUN20</td>
+<td>15JUN20</td>
+<td>22JUN20</td>
+</tr><tr><td>F2B</td>
+<td>22NOV15</td>
+<td>22NOV15</td>
+<td>22NOV15</td>
+<td>22OCT03</td>
+<td>22OCT11</td>
+</tr><tr><td>F3</td>
+<td>01OCT09</td>
+<td>01OCT09</td>
+<td>01OCT09</td>
+<td>08SEP98</td>
+<td>08JUN02</td>
+</tr><tr><td>F4</td>
+<td>08JUN07</td>
+<td>08JUN07</td>
+<td>15DEC05</td>
+<td>15OCT00</td>
+<td>15JUN03</td>
+</tr></tbody></table>
