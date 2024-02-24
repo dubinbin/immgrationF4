@@ -2,9 +2,9 @@ import puppeteer from "puppeteer";
 import { getCurrentYearAndMonth } from "@/utils";
 import { redis } from "@/utils/redis";
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 
-export default async function handler() {
+export async function GET() {
     try {
         const { currentYear ,currentMonthEn, currentMonth, currentDay, nextMonth, nextMonthEn } = getCurrentYearAndMonth();
 
