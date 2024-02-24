@@ -1,7 +1,7 @@
 {
     "crons": [
       {
-        "path": "/api/getimmgration/cron",
+        "path": "/api/getimmgration/runTask",
         "schedule": "0 16 * * *"
       }
     ]

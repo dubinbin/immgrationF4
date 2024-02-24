@@ -4,8 +4,8 @@ import { redis } from "@/utils/redis";
 export async function POST() {
     try {
         const { currentYear, currentMonth, currentDay, nextMonth } = getCurrentYearAndMonth();
-        const nextMonthfileName = `${currentYear}-${nextMonth}-${currentDay}`;
         const currentMonthfileName = `${currentYear}-${currentMonth}-${currentDay}`;
+        const nextMonthfileName = `${currentYear}-${nextMonth}-${currentDay}`;
 
         const task = [{
             fileName:currentMonthfileName,
@@ -19,7 +19,6 @@ export async function POST() {
             currentMonth: result1 || '',
             nextMonth: result2 || ''
         }
-
         return Response.json(resultData);
     } catch (err) {
         return Response.json({ msg: "error" });

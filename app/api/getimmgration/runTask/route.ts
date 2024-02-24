@@ -8,9 +8,9 @@ export async function POST() {
     try {
         const { currentYear ,currentMonthEn, currentMonth, currentDay, nextMonth, nextMonthEn } = getCurrentYearAndMonth();
 
-        const nextMonthfileName = `${currentYear}-${nextMonth}-${currentDay}`;
         const currentMonthfileName = `${currentYear}-${currentMonth}-${currentDay}`;
-
+        const nextMonthfileName = `${currentYear}-${nextMonth}-${currentDay}`;
+        
         const task = [{
             monthEn:currentMonthEn,
             fileName:currentMonthfileName,
