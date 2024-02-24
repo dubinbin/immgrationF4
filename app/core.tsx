@@ -24,7 +24,9 @@ export const Core = async () => {
             } else {
                 return <div style={{textAlign: "center", marginTop: 20, fontSize: 25}}>今日数据暂无，正在拉取，请稍等</div>
             }
-        });
+        }).catch((e) => {
+            return <div style={{textAlign: "center", marginTop: 20, fontSize: 25}}>今日数据暂无，正在拉取，请稍等</div>
+        })
 
     } catch(err) {
         return <div style={{textAlign: "center", marginTop: 20, fontSize: 25}}>今日数据暂无，正在拉取，请稍等</div>
