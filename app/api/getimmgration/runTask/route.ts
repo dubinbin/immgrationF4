@@ -4,7 +4,7 @@ import { redis } from "@/utils/redis";
 
 export const dynamic = 'force-dynamic'
 
-export async function POST() {
+export default async function handler() {
     try {
         const { currentYear ,currentMonthEn, currentMonth, currentDay, nextMonth, nextMonthEn } = getCurrentYearAndMonth();
 
