@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^122.0.0",
     "@upstash/redis": "^1.28.4",
     "next": "14.1.0",
     "puppeteer-core": "^22.2.0",
