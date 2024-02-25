@@ -1,7 +1,11 @@
 import { getCurrentYearAndMonth } from "@/utils";
 import { redis } from "@/utils/redis";
-import puppeteer from 'puppeteer-core';
-import chrome from "chrome-aws-lambda";
+
+const remoteExecutablePath =
+  "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar";
+
+const localExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const isDev = process.env.NODE_ENV === "development";
 
 export async function POST() {
     try {
@@ -18,28 +22,20 @@ export async function POST() {
             fileName: nextMonthfileName,
         }];
 
+        const chromium = require("@sparticuz/chromium-min");
+        const puppeteer = require("puppeteer-core");
+
         task.forEach(async (item) => {
             const browser = await puppeteer.launch({
-                args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
-                defaultViewport: chrome.defaultViewport,
-                executablePath: await chrome.executablePath,
-                headless: chrome.headless,
-                ignoreHTTPSErrors: true,
+                args: isDev ? [] : chromium.args,
+                defaultViewport: { width: 1920, height: 1080 },
+                executablePath: isDev
+                ? localExecutablePath
+                : await chromium.executablePath(remoteExecutablePath),
+                headless: chromium.headless,
             });
             const url = `https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/${currentYear}/visa-bulletin-for-${item.monthEn}-${currentYear}.html`;
             const page = await browser.newPage();
-            page.setRequestInterception(true);
-            page.on("request", (req) => {
-                if (
-                  req.resourceType() == "stylesheet" ||
-                  req.resourceType() == "font" ||
-                  req.resourceType() == "image"
-                ) {
-                  req.abort();
-                } else {
-                  req.continue();
-                }
-            });
             await page.setExtraHTTPHeaders({
                 "accept": `text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7`,
             });
