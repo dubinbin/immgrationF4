@@ -1,11 +1,19 @@
 import { getCurrentYearAndMonth } from "@/utils";
 import { redis } from "@/utils/redis";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium-min";
 
-const remoteExecutablePath =
-  "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar";
-
-const localExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const isDev = process.env.NODE_ENV === "development";
+async function getBrowser() {
+    return puppeteer.launch({
+      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(
+        `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+      ),
+      headless: true,
+      ignoreHTTPSErrors: true,
+    });
+  }
 
 export async function GET() {
     try {
@@ -22,18 +30,8 @@ export async function GET() {
             fileName: nextMonthfileName,
         }];
 
-        const chromium = require("@sparticuz/chromium-min");
-        const puppeteer = require("puppeteer-core");
-
         task.forEach(async (item) => {
-            const browser = await puppeteer.launch({
-                args: isDev ? [] : chromium.args,
-                defaultViewport: { width: 1920, height: 1080 },
-                executablePath: isDev
-                ? localExecutablePath
-                : await chromium.executablePath(remoteExecutablePath),
-                headless: chromium.headless,
-            });
+            const browser = await getBrowser();
             const url = `https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/${currentYear}/visa-bulletin-for-${item.monthEn}-${currentYear}.html`;
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders({
