@@ -1,6 +1,4 @@
-import puppeteer from "puppeteer-core";
 import { getCurrentYearAndMonth } from "@/utils";
-import chromium from "@sparticuz/chromium";
 import { redis } from "@/utils/redis";
 
 export async function GET() {
@@ -19,10 +17,19 @@ export async function GET() {
         }];
 
         task.forEach(async (item) => {
-            const browser = await puppeteer.launch({
-                executablePath: await chromium.executablePath(),
-                headless: true,
-            });
+            let browser;
+            if (process.env.NODE_ENV !== 'development') {
+                const chromium = require('@sparticuz/chromium') 
+                chromium.setGraphicsMode = false 
+                const puppeteer = require('puppeteer-core') 
+                 browser = await puppeteer.launch({
+                    executablePath: await chromium.executablePath(),
+                    headless: true,
+                });
+            } else {
+                const puppeteer = require('puppeteer') 
+                browser = await puppeteer.launch({ headless: true }) 
+            }
             const url = `https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/${currentYear}/visa-bulletin-for-${item.monthEn}-${currentYear}.html`;
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders({
