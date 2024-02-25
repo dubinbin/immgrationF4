@@ -1,5 +1,7 @@
 import { getCurrentYearAndMonth } from "@/utils";
 import { redis } from "@/utils/redis";
+import puppeteer from 'puppeteer-core';
+import chrome from "chrome-aws-lambda";
 
 export async function GET() {
     try {
@@ -17,21 +19,27 @@ export async function GET() {
         }];
 
         task.forEach(async (item) => {
-            let browser;
-            if (process.env.NODE_ENV !== 'development') {
-                const chromium = require('@sparticuz/chromium') 
-                chromium.setGraphicsMode = false 
-                const puppeteer = require('puppeteer-core') 
-                 browser = await puppeteer.launch({
-                    executablePath: await chromium.executablePath(),
-                    headless: true,
-                });
-            } else {
-                const puppeteer = require('puppeteer') 
-                browser = await puppeteer.launch({ headless: true }) 
-            }
+            const browser = await puppeteer.launch({
+                args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+                defaultViewport: chrome.defaultViewport,
+                executablePath: await chrome.executablePath,
+                headless: chrome.headless,
+                ignoreHTTPSErrors: true,
+            });
             const url = `https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/${currentYear}/visa-bulletin-for-${item.monthEn}-${currentYear}.html`;
             const page = await browser.newPage();
+            page.setRequestInterception(true);
+            page.on("request", (req) => {
+                if (
+                  req.resourceType() == "stylesheet" ||
+                  req.resourceType() == "font" ||
+                  req.resourceType() == "image"
+                ) {
+                  req.abort();
+                } else {
+                  req.continue();
+                }
+            });
             await page.setExtraHTTPHeaders({
                 "accept": `text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7`,
             });
