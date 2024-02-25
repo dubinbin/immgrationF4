@@ -7,7 +7,7 @@ const remoteExecutablePath =
 const localExecutablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const isDev = process.env.NODE_ENV === "development";
 
-export async function POST() {
+export async function GET() {
     try {
         const { currentYear ,currentMonthEn, currentMonth, currentDay, nextMonth, nextMonthEn } = getCurrentYearAndMonth();
 
