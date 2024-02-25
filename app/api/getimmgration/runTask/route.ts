@@ -1,10 +1,8 @@
-import puppeteer from "puppeteer";
+import puppeteer, { executablePath } from "puppeteer-core";
 import { getCurrentYearAndMonth } from "@/utils";
 import { redis } from "@/utils/redis";
 
-// export const dynamic = 'force-dynamic'
-
-export async function GET() {
+export async function POST() {
     try {
         const { currentYear ,currentMonthEn, currentMonth, currentDay, nextMonth, nextMonthEn } = getCurrentYearAndMonth();
 
@@ -20,7 +18,10 @@ export async function GET() {
         }];
 
         task.forEach(async (item) => {
-            const browser = await puppeteer.launch({ headless: true });
+            const browser = await puppeteer.launch({
+                 headless: true,
+                 executablePath: executablePath("chrome"),
+            });
             const url = `https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/${currentYear}/visa-bulletin-for-${item.monthEn}-${currentYear}.html`;
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders({
